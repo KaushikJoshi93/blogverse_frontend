@@ -10,7 +10,10 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { cookie } = useCookie();
-  const { logout } = useAuth();
+  const { logout ,getUser } = useAuth();
+  useEffect(()=>{
+    getUser();
+  },[])
   const handleLogout = async () => {
     try {
       logout();
