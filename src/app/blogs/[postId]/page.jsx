@@ -12,9 +12,26 @@ import EditPostModal from "@/components/EditPostModal";
 export default function Post({ params }) {
     const [postData, setPostData] = useState([]);
     const router = useRouter();
-    const { cookie } = useCookie();
+    let cookie_name = "blogverse_user";
+    const { cookie , setItem } = useCookie("");
     const [loading, setLoading] = useState(false);
     const [showModal , setShowModal] = useState(false);
+
+    function getCookieValue(cookieName) {
+        const cookies = document.cookie.split("; ");
+      
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split("=");
+      
+          if (cookie[0] === cookieName) {
+            let cookie_val =  JSON.parse(decodeURIComponent(cookie[1]))
+            setItem(cookie_val);
+            return cookie_val;
+          }
+        }
+      
+        return null; // Cookie not found
+      }
 
     const getPost = async () => {
         try {
@@ -70,6 +87,7 @@ export default function Post({ params }) {
 
     useEffect(() => {
         getPost();
+        getCookieValue(cookie_name);
     }, [])
     return (
         <div className=' px-4 relative mt-12'>

@@ -2,10 +2,32 @@
 import AdminCards from "@/components/AdminCards";
 import useCookie from "@/hooks/useCookie"
 import Link from "next/link";
+import { useEffect } from "react";
 
 
 const page = () => {
-    const { cookie } = useCookie();
+    let cookie_name = "blogverse_user";
+    const { cookie,setItem } = useCookie("");
+
+    function getCookieValue(cookieName) {
+        const cookies = document.cookie.split("; ");
+      
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split("=");
+      
+          if (cookie[0] === cookieName) {
+            let cookie_val =  JSON.parse(decodeURIComponent(cookie[1]))
+            setItem(cookie_val);
+            return cookie_val;
+          }
+        }
+      
+        return null; // Cookie not found
+      }
+
+      useEffect(()=>{
+        getCookieValue(cookie_name)
+      },[])
     return (
         <div className='w-full h-full mt-24 text-white pb-24 relative'>
             <p className="font-bold text-3xl pl-12 md:pl-24">Welcome {cookie.name}!!</p>

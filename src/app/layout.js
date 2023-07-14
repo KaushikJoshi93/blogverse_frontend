@@ -1,9 +1,16 @@
-import Navbar from '@/components/Navbar'
 import './globals.css'
 import { Josefin_Sans } from 'next/font/google'
 import { Suspense } from 'react'
 import Loading from './loading'
 import Footer from '@/components/Footer'
+import dynamic from "next/dynamic";
+
+const Navbar = dynamic(
+  () => {
+    return import("@/components/Navbar");
+  },
+  { ssr: false }
+);
 
 const josefin_Sans = Josefin_Sans({ 
   weight:['100','200','300','400','500','600','700'],

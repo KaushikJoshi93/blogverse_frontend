@@ -4,21 +4,9 @@ import { useState } from "react";
 
 export default function useCookie(key) {
   const cookie_name = "blogverse_user"
-  const [cookie, setCookie] = useState(getCookieValue(cookie_name));
+  const [cookie, setCookie] = useState(key);
   
-  function getCookieValue(cookieName) {
-    const cookies = document.cookie.split("; ");
   
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].split("=");
-  
-      if (cookie[0] === cookieName) {
-        return JSON.parse(decodeURIComponent(cookie[1]))
-      }
-    }
-  
-    return null; // Cookie not found
-  }
   
   function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -35,6 +23,6 @@ export default function useCookie(key) {
 
   return {
     cookie,
-    setItem
+    setItem,
   };
 }

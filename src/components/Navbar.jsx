@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { cookie } = useCookie();
+  const { cookie ,setItem } = useCookie("");
   const { logout ,getUser } = useAuth();
   useEffect(()=>{
     getUser();
@@ -22,6 +22,26 @@ const Navbar = () => {
       console.log(err)
     }
   }
+
+  function getCookieValue(cookieName) {
+    const cookies = document.cookie.split("; ");
+  
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].split("=");
+  
+      if (cookie[0] === cookieName) {
+        let cookie_val =  JSON.parse(decodeURIComponent(cookie[1]))
+        setItem(cookie_val);
+        return cookie_val;
+      }
+    }
+  
+    return null; // Cookie not found
+  }
+
+  useEffect(()=>{
+    getCookieValue("blogverse_user");
+  },[])
   const UserAvatarDropDown = (props) => (
     <div className={`relative ${props.className}`}>
       <button className="focus:outline-none" onClick={() => setShowDropdown(!showDropdown)}>

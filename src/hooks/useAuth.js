@@ -1,14 +1,34 @@
 import { userRequest } from "@/lib/axios";
 import { useRouter } from "next/navigation"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCookie from "./useCookie";
 
 export const useAuth = () => {
     const router = useRouter();
     const [error, setError] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setItem } = useCookie();
     const cookie_name = "blogverse_user"
+    const { setItem } = useCookie("");
+
+    useEffect(()=>{
+        getCookieValue(cookie_name)
+    },[])
+
+    function getCookieValue(cookieName) {
+        const cookies = document.cookie.split("; ");
+      
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].split("=");
+      
+          if (cookie[0] === cookieName) {
+            let cookie_val =  JSON.parse(decodeURIComponent(cookie[1]))
+            setItem(cookie_val);
+            return cookie_val;
+          }
+        }
+      
+        return null; // Cookie not found
+      }
     const register = async (data) => {
         try {
             setLoading(true)
